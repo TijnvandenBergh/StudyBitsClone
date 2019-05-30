@@ -1,18 +1,19 @@
 package nl.quintor.studybits.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.Entity;
+import javax.persistence.*;
 
-@Embeddable
-@Data
+@Entity
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Transcript {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
     @Column
     private String degree;
 
@@ -20,8 +21,12 @@ public class Transcript {
     private String status;
 
     @Column
-    private String average;
+    private String test;
 
     @Column
     private boolean proven;
+
+    @ManyToOne
+    @JoinColumn
+    private Student student;
 }

@@ -45,11 +45,11 @@ public class StudentService {
     }
 
     @Transactional
-    public void proveTranscript(String studentId) {
+    public void proveTranscript(String studentId, int i) {
         Student studentEntity = studentRepository.getStudentByStudentId(
                 studentId
         );
-        studentEntity.getTranscript().setProven(true);
+        studentEntity.getTranscriptList().get(i).setProven(true);
         studentRepository.saveAndFlush(studentEntity);
     }
 

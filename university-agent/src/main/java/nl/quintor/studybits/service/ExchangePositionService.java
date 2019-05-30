@@ -55,7 +55,7 @@ public class ExchangePositionService {
                 .requestedAttribute("attr1_referent", new AttributeInfo("first_name", Optional.of(transcriptFilter)))
                 .requestedAttribute("attr2_referent", new AttributeInfo("last_name", Optional.of(transcriptFilter)))
                 .requestedAttribute("attr3_referent", new AttributeInfo("degree", Optional.of(transcriptFilter)))
-                .requestedAttribute("attr4_referent", new AttributeInfo("status", Optional.of(transcriptFilter)))
+                .requestedAttribute("attr4_referent", new AttributeInfo("test", Optional.of(transcriptFilter)))
                 .build();
 
         ExchangePosition exchangePosition = new ExchangePosition();

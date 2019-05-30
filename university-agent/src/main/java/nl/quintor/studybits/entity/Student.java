@@ -1,20 +1,19 @@
 package nl.quintor.studybits.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Student {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy =  GenerationType.IDENTITY)
+    @Column(name = "student_table_id")
     private long id;
 
     @Column(unique = true)
@@ -41,8 +40,8 @@ public class Student {
     @Column
     private String myDid;
 
-    @Embedded
-    private Transcript transcript;
+    @OneToMany(mappedBy = "student", cascade =  CascadeType.PERSIST)
+    private List<Transcript> transcriptList;
 
     public boolean hasDid() {
         if(this.getStudentDid() != null){
