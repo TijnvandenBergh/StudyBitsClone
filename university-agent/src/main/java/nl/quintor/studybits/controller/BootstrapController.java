@@ -8,6 +8,7 @@ import nl.quintor.studybits.entity.Transcript;
 import nl.quintor.studybits.repository.CourseRepository;
 import nl.quintor.studybits.repository.ExchangePositionRepository;
 import nl.quintor.studybits.repository.StudentRepository;
+import nl.quintor.studybits.repository.TranscriptRepository;
 import nl.quintor.studybits.service.CredentialDefinitionService;
 import nl.quintor.studybits.service.ExchangePositionService;
 import org.hyperledger.indy.sdk.IndyException;
@@ -37,7 +38,7 @@ public class BootstrapController {
     private StudentRepository studentRepository;
 
     @Autowired
-    private CourseRepository courseRepository;
+    private TranscriptRepository transcriptRepository;
 
     @Autowired
     private ExchangePositionRepository exchangePositionRepository;
@@ -104,6 +105,7 @@ public class BootstrapController {
 
     @PostMapping("/reset")
     public void reset() throws JsonProcessingException {
+        transcriptRepository.deleteAll();
         studentRepository.deleteAll();
         exchangePositionRepository.deleteAll();
         if (universityName.equals("Rijksuniversiteit Groningen")) {

@@ -45,6 +45,8 @@ public class AgentService {
     @Autowired
     private MessageEnvelopeCodec messageEnvelopeCodec;
 
+    private HashMap<String, Integer> transcripts = new HashMap<>();
+
     @Value("${nl.quintor.studybits.university.name}")
     private String universityName;
 
@@ -62,9 +64,9 @@ public class AgentService {
                 return exchangePositionService.getAll(messageEnvelope.getDid());
             }
         }
-//        else if (messageTypeURN.equals(CREDENTIAL_REQUEST.getURN())) {
-//            return handleCredentialRequest(MessageEnvelope.convertEnvelope(messageEnvelope, CREDENTIAL_REQUEST));
-//        }
+          else if (messageTypeURN.equals(CREDENTIAL_REQUEST.getURN())) {
+            return handleCredentialRequest(MessageEnvelope.convertEnvelope(messageEnvelope, CREDENTIAL_REQUEST));
+           }
         else if (messageTypeURN.equals(PROOF.getURN())) {
             return handleProof(MessageEnvelope.convertEnvelope(messageEnvelope, PROOF));
         }
@@ -90,43 +92,41 @@ public class AgentService {
         log.debug("Getting credential offers for did {}", did);
         CredentialOfferList credentialOffers = new CredentialOfferList();
         Student student = studentService.getStudentByStudentDid(did);
-
+        log.debug("GROOOTTE VAN DB: " + student.getTranscriptList().size() + "");
         log.debug("Found student for which to get credential offers {}", student);
         for(int i = 0; i < student.getTranscriptList().size(); i++){
         if (student.getTranscriptList().get(i) != null && !student.getTranscriptList().get(i).isProven()) {
             CredentialOffer credentialOffer = universityIssuer.createCredentialOffer(credentialDefinitionService.getCredentialDefinitionId(), did).get();
             credentialOffers.addCredentialOffer(credentialOffer);
             log.debug("Returning credentialOffers {}", credentialOffers);
-            return messageEnvelopeCodec.encryptMessage(credentialOffers, IndyMessageTypes.CREDENTIAL_OFFERS, did).get();
+            transcripts.put(credentialOffer.getNonce(), i);
             }
         }
-
-        log.debug("GROOOTTE VAN DB: " + student.getTranscriptList().size() + "");
-
-        log.debug("Student had no credential offers");
+        log.debug("Transcript cred def id 1"  + transcripts.get(0));
+        log.debug("Transcript cred def id 1" + transcripts.get(1));
         return messageEnvelopeCodec.encryptMessage(credentialOffers, IndyMessageTypes.CREDENTIAL_OFFERS, did).get();
+//        return messageEnvelopeCodec.encryptMessage(credentialOffers, IndyMessageTypes.CREDENTIAL_OFFERS, did).get();
     }
 
 
-//    private MessageEnvelope handleCredentialRequest(MessageEnvelope<CredentialRequest> messageEnvelope) throws IndyException, ExecutionException, InterruptedException, UnsupportedEncodingException, JsonProcessingException {
-//        CredentialRequest credentialRequest = messageEnvelopeCodec.decryptMessage(messageEnvelope).get();
-//        log.debug("Decrypted request");
-//        Student student = studentService.getStudentByStudentDid(messageEnvelope.getDid());
-//
-//        Map<String, Object> values = new HashMap<>();
-//        values.put("first_name", student.getFirstName());
-//        values.put("last_name", student.getLastName());
-//        values.put("degree", student.getTranscript().getDegree());
-//        values.put("test", student.getTranscript().getTest());
-//        values.put("courseList", student.g)
-//        values.put("status", student.getTranscript().getStatus());
-//
-//        CredentialWithRequest credentialWithRequest = universityIssuer.createCredential(credentialRequest, values).get();
-//
-//        studentService.proveTranscript(student.getStudentId());
-//
-//        return messageEnvelopeCodec.encryptMessage(credentialWithRequest, IndyMessageTypes.CREDENTIAL, messageEnvelope.getDid()).get();
-//    }
+    private MessageEnvelope handleCredentialRequest(MessageEnvelope<CredentialRequest> messageEnvelope) throws IndyException, ExecutionException, InterruptedException, UnsupportedEncodingException, JsonProcessingException {
+        CredentialRequest credentialRequest = messageEnvelopeCodec.decryptMessage(messageEnvelope).get();
+        log.debug("Decrypted request");
+        int position = transcripts.get(credentialRequest.getCredentialOffer().getNonce());
+        Student student = studentService.getStudentByStudentDid(messageEnvelope.getDid());
+        Map<String, Object> values = new HashMap<>();
+        values.put("first_name", student.getFirstName());
+        values.put("last_name", student.getLastName());
+        values.put("degree", student.getTranscriptList().get(position).getDegree());
+        values.put("test", student.getTranscriptList().get(position).getTest());
+        values.put("status", "enrolled");
+
+        CredentialWithRequest credentialWithRequest = universityIssuer.createCredential(credentialRequest, values).get();
+
+        studentService.proveTranscript(student.getStudentId(), position);
+
+        return messageEnvelopeCodec.encryptMessage(credentialWithRequest, IndyMessageTypes.CREDENTIAL, messageEnvelope.getDid()).get();
+    }
 
     private MessageEnvelope handleProof(MessageEnvelope<Proof> proofEnvelope) throws IndyException, ExecutionException, InterruptedException, IOException {
         log.debug("Handling proof");
