@@ -90,9 +90,14 @@ public class AgentService {
         studentService.setStudentDid(studentId, connectionRequest.getDid());
         Parser parser = parserFactory.getParser(universitySystem);
         log.debug( "Id of student" + studentId);
-        if (parser != null) {
-            String bla = parser.parseStudent(Integer.parseInt(studentId));
-            log.debug(bla + "EWAEWAEWA");
+        if (parser != null & !studentId.isEmpty()) {
+            try {
+                String bla = parser.parseStudent(Integer.parseInt(studentId));
+                log.debug(bla + "EWAEWAEWA");
+            }
+            catch(NumberFormatException ex) {
+                log.debug("Geen geldig nummer" + ex.getMessage());
+            }
         }
         return messageEnvelopeCodec.encryptMessage(connectionResponse, IndyMessageTypes.CONNECTION_RESPONSE, connectionRequest.getDid()).get();
     }

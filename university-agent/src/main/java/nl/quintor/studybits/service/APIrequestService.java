@@ -15,8 +15,10 @@ public class APIrequestService {
         String fullUrl = url + endpoint;
         log.debug(fullUrl);
         String idVar = Integer.toString(id);
+        log.debug("Studentid");
         RestTemplate restTemplate = new RestTemplate();
-        try {
+        try{
+
             return restTemplate.getForObject(fullUrl, String.class, idVar);
         }
         catch (HttpClientErrorException | HttpServerErrorException httpClientOrServerExc) {
