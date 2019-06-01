@@ -44,6 +44,11 @@ public class AgentService {
     private ExchangePositionService exchangePositionService;
     @Autowired
     private MessageEnvelopeCodec messageEnvelopeCodec;
+    @Autowired
+    private ParserFactory parserFactory;
+
+    @Value("${nl.quintor.studybits.university.system}")
+    private String universitySystem;
 
     private HashMap<String, Integer> transcripts = new HashMap<>();
 
@@ -81,10 +86,14 @@ public class AgentService {
         //Get studentID / current user
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String studentId = auth.getName();
-
         ConnectionResponse connectionResponse = universityTrustAnchor.acceptConnectionRequest(connectionRequest).get();
-
         studentService.setStudentDid(studentId, connectionRequest.getDid());
+        Parser parser = parserFactory.getParser(universitySystem);
+        log.debug( "Id of student" + studentId);
+        if (parser != null) {
+            String bla = parser.parseStudent(Integer.parseInt(studentId));
+            log.debug(bla + "EWAEWAEWA");
+        }
         return messageEnvelopeCodec.encryptMessage(connectionResponse, IndyMessageTypes.CONNECTION_RESPONSE, connectionRequest.getDid()).get();
     }
 
@@ -92,7 +101,6 @@ public class AgentService {
         log.debug("Getting credential offers for did {}", did);
         CredentialOfferList credentialOffers = new CredentialOfferList();
         Student student = studentService.getStudentByStudentDid(did);
-        log.debug("GROOOTTE VAN DB: " + student.getTranscriptList().size() + "");
         log.debug("Found student for which to get credential offers {}", student);
         for(int i = 0; i < student.getTranscriptList().size(); i++){
         if (student.getTranscriptList().get(i) != null && !student.getTranscriptList().get(i).isProven()) {
@@ -102,8 +110,7 @@ public class AgentService {
             transcripts.put(credentialOffer.getNonce(), i);
             }
         }
-        log.debug("Transcript cred def id 1"  + transcripts.get(0));
-        log.debug("Transcript cred def id 1" + transcripts.get(1));
+
         return messageEnvelopeCodec.encryptMessage(credentialOffers, IndyMessageTypes.CREDENTIAL_OFFERS, did).get();
 //        return messageEnvelopeCodec.encryptMessage(credentialOffers, IndyMessageTypes.CREDENTIAL_OFFERS, did).get();
     }
@@ -119,6 +126,7 @@ public class AgentService {
         values.put("last_name", student.getLastName());
         values.put("degree", student.getTranscriptList().get(position).getDegree());
         values.put("test", student.getTranscriptList().get(position).getTest());
+
         values.put("status", "enrolled");
 
         CredentialWithRequest credentialWithRequest = universityIssuer.createCredential(credentialRequest, values).get();
