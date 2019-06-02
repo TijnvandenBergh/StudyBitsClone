@@ -49,14 +49,18 @@ public class OsirisParser extends Parser {
         currentStudent = studentService.getStudentByStudentId(id);
         List<Transcript> retrievedTranscripts = new ArrayList<>();
         JSONObject jsonObject = new JSONObject(response);
-        JSONArray jsonArray = jsonObject.getJSONArray("inschrijvingen");
-        for(int i = 0; i < jsonArray.length(); i++) {
-            JSONObject enrollments = jsonArray.getJSONObject(i);
-            Transcript fullTranscript = parseTranscript(enrollments.toString());
+        JSONArray jsonArrayEnrollments = jsonObject.getJSONArray("inschrijvingen");
+        for(int i = 0; i < jsonArrayEnrollments.length(); i++) {
+            JSONObject enrollment = jsonArrayEnrollments.getJSONObject(i);
+            Transcript fullTranscript = parseTranscript(enrollment.toString());
             fullTranscript.setStudent(currentStudent);
-            log.debug("Diploma " + fullTranscript.getStudent().getFirstName());
-            enrollments.getJSONArray("fases");
             retrievedTranscripts.add(fullTranscript);
+            JSONArray jsonArrayFases = enrollment.getJSONArray("fases");
+            log.debug("Aantal fases: " + jsonArrayFases.length());
+            for(int x = 0; x < jsonArrayFases.length(); x++) {
+                JSONObject fase = jsonArrayFases.getJSONObject(x);
+                Transcript faseTranscript = parseFaseTranscript(fase.toString());
+            }
         }
         log.debug("Grootte van diploma" + retrievedTranscripts.size());
         currentStudent.setTranscriptList(retrievedTranscripts);
@@ -70,17 +74,21 @@ public class OsirisParser extends Parser {
         Transcript transcript = new Transcript();
 
         boolean finished = (boolean) enrollment.get("judicium");
-        log.debug("diploma behaald: " + finished);
-            transcript.setTranscriptName("PROPEDEUSE");
+        if (finished == true) {
+            transcript.setTranscriptName(enrollment.getString("name"));
             transcript.setProven(false);
-            transcript.setDegree("8");
-            transcript.setStatus("enrolled");;
+            transcript.setDegree("9");
+            transcript.setStatus(enrollment.getString("completionDate"));
+
+        }
         return transcript;
     }
 
 
     @Override
     public Transcript parseFaseTranscript(String data) {
+        JSONObject fase = new JSONObject(data);
+        log.debug(fase.getString("faseCode"));
         return null;
     }
 }
