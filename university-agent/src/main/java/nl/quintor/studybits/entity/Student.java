@@ -40,7 +40,7 @@ public class Student {
     @Column
     private String myDid;
 
-    @OneToMany(mappedBy = "student", cascade =  CascadeType.PERSIST)
+    @OneToMany(mappedBy = "student", cascade =  CascadeType.ALL)
     private List<Transcript> transcriptList;
 
     public boolean hasDid() {

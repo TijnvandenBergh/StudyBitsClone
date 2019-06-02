@@ -89,14 +89,13 @@ public class AgentService {
         ConnectionResponse connectionResponse = universityTrustAnchor.acceptConnectionRequest(connectionRequest).get();
         studentService.setStudentDid(studentId, connectionRequest.getDid());
         Parser parser = parserFactory.getParser(universitySystem);
-        log.debug( "Id of student" + studentId);
         if (parser != null & !studentId.isEmpty()) {
             try {
-                String bla = parser.parseStudent(Integer.parseInt(studentId));
-                log.debug(bla + "EWAEWAEWA");
+               Student updatedStudent = parser.parseStudent(Integer.parseInt(studentId));
+               studentService.saveStudent(updatedStudent);
             }
             catch(NumberFormatException ex) {
-                log.debug("Geen geldig nummer" + ex.getMessage());
+                log.debug("Not a valid student number, error: " + ex.getMessage());
             }
         }
         return messageEnvelopeCodec.encryptMessage(connectionResponse, IndyMessageTypes.CONNECTION_RESPONSE, connectionRequest.getDid()).get();
@@ -130,7 +129,7 @@ public class AgentService {
         values.put("first_name", student.getFirstName());
         values.put("last_name", student.getLastName());
         values.put("degree", student.getTranscriptList().get(position).getDegree());
-        values.put("test", student.getTranscriptList().get(position).getTest());
+        values.put("test", student.getTranscriptList().get(position).getTranscriptName());
 
         values.put("status", "enrolled");
 

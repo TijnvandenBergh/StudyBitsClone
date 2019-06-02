@@ -75,22 +75,22 @@ public class BootstrapController {
         student.setLastName("Veren");
         student.setPassword(bCryptPasswordEncoder.encode("test1234"));
         student.setStudentDid(null);
-        List<Transcript> transcriptList = new ArrayList<>();
-        Transcript transcript =new Transcript();
-        transcript.setDegree("8");
-        transcript.setStatus("enrolled");
-        transcript.setStudent(student);
-        transcript.setProven(false);
-        transcript.setTest("BACHELOR");
-        transcriptList.add(transcript);
-        Transcript propedeuse = new Transcript();
-        propedeuse.setDegree("6");
-        propedeuse.setStatus("enrolled");
-        propedeuse.setStudent(student);
-        propedeuse.setProven(false);
-        propedeuse.setTest("PROPEDEUSE");
-        transcriptList.add(propedeuse);
-        student.setTranscriptList(transcriptList);
+//        List<Transcript> transcriptList = new ArrayList<>();
+//        Transcript transcript =new Transcript();
+//        transcript.setDegree("8");
+//        transcript.setStatus("enrolled");
+//        transcript.setStudent(student);
+//        transcript.setProven(false);
+//        transcript.setTest("BACHELOR");
+//        transcriptList.add(transcript);
+//        Transcript propedeuse = new Transcript();
+//        propedeuse.setDegree("6");
+//        propedeuse.setStatus("enrolled");
+//        propedeuse.setStudent(student);
+//        propedeuse.setProven(false);
+//        propedeuse.setTest("PROPEDEUSE");
+//        transcriptList.add(propedeuse);
+//        student.setTranscriptList(transcriptList);
         studentRepository.saveAndFlush(student);
 
         return studentRepository.getStudentByStudentId(studentId).toString();
@@ -109,7 +109,7 @@ public class BootstrapController {
         studentRepository.deleteAll();
         exchangePositionRepository.deleteAll();
         if (universityName.equals("Rijksuniversiteit Groningen")) {
-            createStudentPosition("12345678");
+            createStudentPosition("2102241");
         }
         if (credDefId  != null) {
             exchangePositionService.createExchangePosition(credDefId);

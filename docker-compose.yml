@@ -17,6 +17,7 @@ services:
     environment:
     - TEST_POOL_IP=$TEST_POOL_IP
     - NL_QUINTOR_STUDYBITS_UNIVERSITY_NAME=Rijksuniversiteit Groningen
+    - NL_QUINTOR_STUDYBITS_UNIVERSITY_SYSTEM=Osiris
     - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES:-mobile-test}
     depends_on:
       pool:
@@ -34,6 +35,7 @@ services:
     environment:
     - TEST_POOL_IP=$TEST_POOL_IP
     - NL_QUINTOR_STUDYBITS_UNIVERSITY_NAME=Universiteit Gent
+    - NL_QUINTOR_STUDYBITS_UNIVERSITY_SYSTEM=Progress
     - SERVER_PORT=8081
     - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES:-mobile-test}
     depends_on:

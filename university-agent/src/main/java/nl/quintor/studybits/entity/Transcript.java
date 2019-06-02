@@ -21,7 +21,7 @@ public class Transcript {
     private String status;
 
     @Column
-    private String test;
+    private String transcriptName;
 
     @Column
     private boolean proven;
@@ -29,4 +29,6 @@ public class Transcript {
     @ManyToOne
     @JoinColumn
     private Student student;
+    
 }
+

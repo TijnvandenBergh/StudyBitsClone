@@ -1,11 +1,15 @@
 package nl.quintor.studybits.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
 public class ParserFactory {
+
+    @Autowired
+    OsirisParser osirisParser;
 
     public Parser getParser(String system) {
         if (system == null) {
@@ -23,7 +27,7 @@ public class ParserFactory {
     }
 
     public OsirisParser OsirisCreateService() {
-        return new OsirisParser("OsirisParser");
+        return osirisParser;
     }
 
     public OsirisParser ProgressCreateService() {

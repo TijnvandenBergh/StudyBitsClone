@@ -18,7 +18,8 @@ public abstract class Parser {
         this.url = url;
     }
     public abstract String callDataSource(int id, String url, String endpoint);
-    public abstract String parseStudent(int studentid);
+    public abstract Student parseStudent(int studentid);
     public abstract Transcript parseTranscript(String data);
+    public abstract Transcript parseFaseTranscript(String data);
 
 }
