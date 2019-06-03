@@ -1,8 +1,10 @@
 package nl.quintor.studybits.entity;
 
+import io.micrometer.core.lang.Nullable;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -29,6 +31,10 @@ public class Transcript {
     @ManyToOne
     @JoinColumn
     private Student student;
+
+    @OneToMany(mappedBy = "transcript", cascade =  CascadeType.ALL)
+    @Nullable
+    private List<Course> courses;
     
 }
 

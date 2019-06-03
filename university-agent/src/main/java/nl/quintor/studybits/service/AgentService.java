@@ -126,11 +126,9 @@ public class AgentService {
         int position = transcripts.get(credentialRequest.getCredentialOffer().getNonce());
         Student student = studentService.getStudentByStudentDid(messageEnvelope.getDid());
         Map<String, Object> values = new HashMap<>();
-        values.put("first_name", student.getFirstName());
-        values.put("last_name", student.getLastName());
+        values.put("full_name", student.getFirstName() + student.getLastName());
         values.put("degree", student.getTranscriptList().get(position).getDegree());
         values.put("test", student.getTranscriptList().get(position).getTranscriptName());
-
         values.put("status", "enrolled");
 
         CredentialWithRequest credentialWithRequest = universityIssuer.createCredential(credentialRequest, values).get();
