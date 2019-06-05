@@ -31,6 +31,14 @@ public class OsirisParser extends Parser {
         super(name, URL_PROGRESS);
     }
 
+
+    /**
+     *
+     * @param id the student id
+     * @param url the base-url of the endpoint
+     * @param endpoint the endpoint to call
+     * @return the JSON string with the data.
+     */
     @Override
     public String callDataSource(int id, String url, String endpoint) {
         String data = requestService.request(id, url, endpoint);
@@ -73,6 +81,11 @@ public class OsirisParser extends Parser {
         return currentStudent;
     }
 
+    /**
+     *
+     * @param data
+     * @return
+     */
     @Override
     public Transcript parseTranscript(String data) {
         JSONObject enrollment = new JSONObject(data);
@@ -89,19 +102,34 @@ public class OsirisParser extends Parser {
     }
 
 
+    /**
+     *
+     * @param data from the transcript JSON which contains a JSONArray of courses
+     * @return returns each Transcript to add to
+     */
     @Override
     public Transcript parseFaseTranscript(String data) {
+        //Parse the string data fase to a new JSONobject
         JSONObject fase = new JSONObject(data);
+        //New transcript to fill
         Transcript transcript = new Transcript();
         log.debug(fase.getString("faseCode"));
+        //Statement to check if the fase does have a transcript and a check if the student received EC matches total of transcript
         if(fase.getBoolean("hasTranscript")&& fase.getInt("totalEC") == fase.getInt("receivedEC")) {
+            //Filling the transcript object by parsing the JSON.
             transcript.setTranscriptName(fase.getString("faseCode"));
             transcript.setProven(false);
             transcript.setStatus("enrolled");
             transcript.setDegree("8");
+            //Getting the courses to fill the transcripts list of courses
             String coursesData = fase.getJSONArray("grades").toString();
             List<Course> coursesTranscript = parseCourses(coursesData);
             transcript.setCourses(coursesTranscript);
+            //For every course set the Transcript for the right relationship in db
+            for (Course course: coursesTranscript
+                 ) {
+                course.setTranscript(transcript);
+            }
             return transcript;
         }
         return null;
@@ -109,11 +137,21 @@ public class OsirisParser extends Parser {
 
     /**
      * This functions parses the courses belong to the Fase-JSONObject or the Enrollment-JSONObject
-     * @param  data from the fase JSON which contains a JSONArray of courses
+     * @param  data from the transcript JSON which contains a JSONArray of courses
      * @return List<Courses> to assign to the Transcript-object
      */
     public List<Course> parseCourses(String data) {
-        List<Course> course = new ArrayList<>();
-        return course;
+        List<Course> courseList = new ArrayList<>();
+        JSONArray courses = new JSONArray(data);
+        for(int y = 0; y < courses.length(); y++) {
+            JSONObject course = courses.getJSONObject(y);
+            Course tempCourse = new Course();
+            tempCourse.setCourseCode(course.getString("courseCode"));
+            tempCourse.setCourseName(course.getString("courseName"));
+            tempCourse.setGrade(course.getDouble("Grade"));
+            courseList.add(tempCourse);
+
+        }
+        return courseList;
     }
 }

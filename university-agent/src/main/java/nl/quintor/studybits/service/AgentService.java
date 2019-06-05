@@ -101,6 +101,15 @@ public class AgentService {
         return messageEnvelopeCodec.encryptMessage(connectionResponse, IndyMessageTypes.CONNECTION_RESPONSE, connectionRequest.getDid()).get();
     }
 
+    /**
+     * This functions gets all available credential offers for the student and sends them to the  Android application
+     * @param did the digital identity of the student wallet
+     * @return the message to send
+     * @throws JsonProcessingException
+     * @throws IndyException
+     * @throws ExecutionException
+     * @throws InterruptedException
+     */
     public MessageEnvelope<CredentialOfferList> getCredentialOffers(String did) throws JsonProcessingException, IndyException, ExecutionException, InterruptedException {
         log.debug("Getting credential offers for did {}", did);
         CredentialOfferList credentialOffers = new CredentialOfferList();
@@ -129,7 +138,7 @@ public class AgentService {
         values.put("full_name", student.getFirstName() + student.getLastName());
         values.put("degree", student.getTranscriptList().get(position).getDegree());
         values.put("test", student.getTranscriptList().get(position).getTranscriptName());
-        values.put("status", "enrolled");
+        values.put("status", student.getTranscriptList().get(position).coursesToString());
 
         CredentialWithRequest credentialWithRequest = universityIssuer.createCredential(credentialRequest, values).get();
 

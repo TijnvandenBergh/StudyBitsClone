@@ -17,7 +17,19 @@ public class Course {
     private long id;
 
     @Column
-    private String name;
+    private String courseName;
+
+    @Column
+    private String courseCode;
+
+    @Column
+    private double grade;
+
+    @Column
+    private double receivedEC;
+
+    @Column
+    private double courseEC;
 
     @ManyToOne
     @JoinColumn

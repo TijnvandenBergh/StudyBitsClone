@@ -2,6 +2,7 @@ package nl.quintor.studybits.entity;
 
 import io.micrometer.core.lang.Nullable;
 import lombok.*;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Slf4j
 public class Transcript {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,6 +37,21 @@ public class Transcript {
     @OneToMany(mappedBy = "transcript", cascade =  CascadeType.ALL)
     @Nullable
     private List<Course> courses;
+
+    public String coursesToString() {
+    if (this.courses != null) {
+        StringBuilder builder = new StringBuilder();
+        for (Course crs: this.courses
+             ) {
+                builder.append( "\n" + "Coursecode: " +crs.getCourseCode() + "\n");
+                builder.append("Coursename: " + crs.getCourseName() +"\n");
+                builder.append("Grade: " + crs.getGrade() + "\n");
+                log.debug("Builder" + builder.toString());
+            }
+        return builder.toString();
+        }
+        return "No courses and grades";
+    }
     
 }
 
