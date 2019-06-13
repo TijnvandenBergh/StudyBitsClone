@@ -6,4 +6,9 @@ jobs:
     steps:
       - checkout
       - run: ./.circleci.sh
-
+  addons:
+  sonarcloud:
+    organization: "tijn167-github" # the key of the org you chose at step #3
+  apt:
+    packages:
+      - oracle-java8-installer
