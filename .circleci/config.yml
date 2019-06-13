@@ -8,6 +8,7 @@ jobs:
       - run: ./.circleci.sh
 addons:
   sonarcloud:
+    projectKey: tijn167_StudyBitsClone
     organization: "tijn167-github" # the key of the org you chose at step #3
   apt:
     packages:
