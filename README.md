@@ -1,5 +1,7 @@
 # StudyBits
 
+[![CircleCI](https://circleci.com/gh/tijn167/StudyBitsClone.svg?style=svg)](https://circleci.com/gh/tijn167/StudyBitsClone)
+
 StudyBits allows students to receive credentials from their universities, and issue zero-knowledge proofs to other universities.
 
 StudyBits leverages the [Sovrin network](https://sovrin.org/) to store DIDs, Schemas and Credential Definitions.
