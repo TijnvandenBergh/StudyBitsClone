@@ -12,3 +12,5 @@ jobs:
   apt:
     packages:
       - oracle-java8-installer
+  script:
+  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
