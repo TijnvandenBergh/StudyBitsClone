@@ -1,5 +1,6 @@
 package nl.quintor.studybits.service;
 
+
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import nl.quintor.studybits.entity.Course;
@@ -94,8 +95,17 @@ public class OsirisParser extends Parser {
         if (finished) {
             transcript.setTranscriptName(enrollment.getString("name"));
             transcript.setProven(false);
-            transcript.setDegree("9");
+            transcript.setReceivedDate(enrollment.getString("completionDate"));
             transcript.setStatus(enrollment.getString("completionDate"));
+            transcript.setTotalEC( enrollment.getInt("totalEC"));
+            transcript.setTranscriptType(enrollment.getString("type"));
+            List<Course> courseList = parseCourses(enrollment.getJSONArray("grades").toString());
+            log.debug("Course in transcript" + courseList.size());
+            transcript.setCourses(courseList);
+            for (Course course: courseList
+            ) {
+                course.setTranscript(transcript);
+            }
 
         }
         return transcript;
@@ -121,6 +131,8 @@ public class OsirisParser extends Parser {
             transcript.setProven(false);
             transcript.setStatus("enrolled");
             transcript.setDegree("8");
+            transcript.setTranscriptType(fase.getString("type"));
+            transcript.setReceivedDate(fase.getString("completionDate"));
             //Getting the courses to fill the transcripts list of courses
             String coursesData = fase.getJSONArray("grades").toString();
             List<Course> coursesTranscript = parseCourses(coursesData);

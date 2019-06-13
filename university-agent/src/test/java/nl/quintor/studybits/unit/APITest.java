@@ -17,7 +17,7 @@ public class APITest {
     @Test
     public void notExistingStudentTest() {
         when().
-                get("https://my-json-server.typicode.com/tijn167/FakeJsonApi/student/123455555555").
+                get("http://my-json-server.typicode.com/tijn167/FakeJsonApi/student/123455555555").
                 then().
                     statusCode(404);
     }
@@ -25,7 +25,7 @@ public class APITest {
     @Test
     public void ExistingStudentTest() {
         when().
-                get("https://my-json-server.typicode.com/tijn167/FakeJsonApi/student/2102241").
+                get("http://my-json-server.typicode.com/tijn167/FakeJsonApi/student/2102241").
                 then().
                 statusCode(200).and().contentType(ContentType.JSON);
     }
@@ -33,7 +33,7 @@ public class APITest {
     @Test
     public void BadInputTest() {
         when().
-                get("https://my-json-server.typicode.com/tijn167/FakeJsonApi/students/@@@e1337@@@@eeL33T").
+                get("http://my-json-server.typicode.com/tijn167/FakeJsonApi/students/@@@e1337@@@@eeL33T").
                 then().
                 statusCode(404);
     }

@@ -28,7 +28,16 @@ public class Transcript {
     private String transcriptName;
 
     @Column
+    private String transcriptType;
+
+    @Column
     private boolean proven;
+
+    @Column
+    private String receivedDate;
+
+    @Column
+    private int totalEC;
 
     @ManyToOne
     @JoinColumn

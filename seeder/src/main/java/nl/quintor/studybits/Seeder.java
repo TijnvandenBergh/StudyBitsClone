@@ -124,8 +124,7 @@ public class Seeder {
             try {
                 IndyWallet stewardWallet = IndyWallet.open(indyPool, "steward", "000000000000000000000000Steward1", "Th7MpTaRZVRYnPiabds81Y");
                 Issuer trustAnchorIssuer = new Issuer(stewardWallet);
-                String schemaId = trustAnchorIssuer.createAndSendSchema("Transcript", "1.0", "full_name", "degree", "status", "test").get();
-                Srin
+                String schemaId = trustAnchorIssuer.createAndSendSchema("Transcript", "1.0", "full_name", "degree", "type", "courses", "totalec", "completiondate").get();
                 System.out.println(schemaId);
             } catch (Exception e) {
                 exception(e);
@@ -133,20 +132,7 @@ public class Seeder {
         }
     }
 
-    @Command(name = "schemaCourse", description = "Define second schema and return schema ID.")
-    static class SchemaCourseCommand implements  Runnable {
-        @Override
-        public void run() {
-            try {
-                IndyWallet stewardWallet = IndyWallet.open(indyPool, "steward", "000000000000000000000000Steward1", "Th7MpTaRZVRYnPiabds81Y");
-                Issuer trustAnchorIssuer = new Issuer(stewardWallet);
-                String schemaId = trustAnchorIssuer.createAndSendSchema("Course", "1.0", "full_name", "degree", "status", "test").get();
-                System.out.println(schemaId);
-            } catch (Exception e) {
-                exception(e);
-            }
-        }
-    }
+
 
 
     @Command(name = "cred-def", description = "Create credential defenition from schema ID and return credential defenitial ID")
