@@ -6,12 +6,4 @@ jobs:
     steps:
       - checkout
       - run: ./.circleci.sh
-addons:
-  sonarcloud:
-    projectKey: tijn167_StudyBitsClone
-    organization: "tijn167-github" # the key of the org you chose at step #3
-  apt:
-    packages:
-      - oracle-java8-installer
-  script:
-  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
+      - run: mvn sonar:sonar -Dsonar.organization=tijn167-github -Dsonar.host.url=https://sonarcloud.io    -Dsonar.login=f190fe8b2de543642d433b425cf7dcca7d7b9e45
