@@ -203,7 +203,7 @@ public class ScenarioIT {
         Credential credential = credentialWithRequest.getCredential();
 
         assertThat(credential.getValues().get("degree").get("raw").asText(), is(notNullValue()));
-        assertThat(credential.getValues().get("type").get("raw").asText(), is(equalTo("bachelor")));
+        assertThat(credential.getValues().get("type").get("raw").asText(), is(equalTo("Bachelor")));
 
         String getRequest = studentCodec.encryptMessage(CREDENTIAL_OFFERS.getURN(), GET_REQUEST, rugLisaDid).get().toJSON();
 
