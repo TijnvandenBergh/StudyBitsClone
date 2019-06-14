@@ -6,4 +6,4 @@ jobs:
     steps:
       - checkout:
           path: ~/repo/university-agent
-      - run: ~/.circleci.sh
+      - run: ././.circleci.sh
