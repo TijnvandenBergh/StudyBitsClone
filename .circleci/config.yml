@@ -5,7 +5,7 @@ jobs:
     working_directory: ~/repo/university-agent
     steps:
       - checkout
-            path: ~/repo
+            path: "~/repo"
       - run: ./.circleci.sh
     steps: 
       - checkout
