@@ -8,5 +8,5 @@ jobs:
       - checkout
       - run:  ./.circleci.sh
       - checkout:
-           path: ~/repo/studybitsclone
-      #- run: cd ./university-agent mvn sonar:sonar \-Dsonar.projectKey=tijn167_StudyBitsClone \-Dsonar.organization=tijn167-github \-Dsonar.host.url=https://sonarcloud.io \-Dsonar.login=f190fe8b2de543642d433b425cf7dcca7d7b9e45
+           path: ~/repo/studybitsclone/
+      - run: cd ./university-agent mvn sonar:sonar \-Dsonar.projectKey=tijn167_StudyBitsClone \-Dsonar.organization=tijn167-github \-Dsonar.host.url=https://sonarcloud.io \-Dsonar.login=f190fe8b2de543642d433b425cf7dcca7d7b9e45
