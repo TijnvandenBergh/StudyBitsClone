@@ -1,7 +1,8 @@
 version: 2 # CircleCI version
 jobs:
   build:
-    machine: true # Use a Linux VM instead of docker environment
+    machine: 
+      image: circleci/classic:latest
     working_directory: ~/repo
     steps:
       - checkout
