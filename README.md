@@ -1,6 +1,7 @@
 # StudyBits
 
-[![CircleCI](https://circleci.com/gh/tijn167/StudyBitsClone.svg?style=svg)](https://circleci.com/gh/tijn167/StudyBitsClone)
+[![CircleCI](https://circleci.com/gh/tijn167/StudyBitsClone.svg?style=svg)](https://circleci.com/gh/tijn167/StudyBitsClone) [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=tijn167_StudyBitsClone&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=tijn167_StudyBitsClone)
+
 
 StudyBits allows students to receive credentials from their universities, and issue zero-knowledge proofs to other universities.
 
