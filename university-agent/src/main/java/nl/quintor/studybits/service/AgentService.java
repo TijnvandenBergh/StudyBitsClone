@@ -2,7 +2,9 @@ package nl.quintor.studybits.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.extern.slf4j.Slf4j;
+import nl.quintor.studybits.entity.CredentialDefinitionType;
 import nl.quintor.studybits.entity.Student;
+import nl.quintor.studybits.entity.Transcript;
 import nl.quintor.studybits.indy.wrapper.Issuer;
 import nl.quintor.studybits.indy.wrapper.TrustAnchor;
 import nl.quintor.studybits.indy.wrapper.Verifier;
@@ -23,6 +25,8 @@ import java.io.UnsupportedEncodingException;
 import org.springframework.security.access.AccessDeniedException;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static nl.quintor.studybits.indy.wrapper.message.IndyMessageTypes.*;
 import static nl.quintor.studybits.messages.StudyBitsMessageTypes.EXCHANGE_POSITIONS;
@@ -115,13 +119,34 @@ public class AgentService {
         CredentialOfferList credentialOffers = new CredentialOfferList();
         Student student = studentService.getStudentByStudentDid(did);
         log.debug("Found student for which to get credential offers {}", student);
-        for(int i = 0; i < student.getTranscriptList().size(); i++){
-        if (student.getTranscriptList().get(i) != null && !student.getTranscriptList().get(i).isProven()) {
-            CredentialOffer credentialOffer = universityIssuer.createCredentialOffer(credentialDefinitionService.getCredentialDefinitionId(), did).get();
-            credentialOffers.addCredentialOffer(credentialOffer);
-            log.debug("Returning credentialOffers {}", credentialOffers);
-            transcripts.put(credentialOffer.getNonce(), i);
+        log.debug("Item count in map" + credentialDefinitionService.getCredentialDefinitionIds().size());
+        List<Transcript> transcriptList = student.getTranscriptList();
+        List<Transcript> resultTranscriptList = transcriptList
+                .stream()
+                .filter(x -> x.getTranscriptType().equalsIgnoreCase("bachelor"))
+                .collect(Collectors.toList());
+        log.debug("items after list " + resultTranscriptList.size());
+        for(int i = 0; i < resultTranscriptList.size(); i++){
+            if (student.getTranscriptList().get(i) != null && !student.getTranscriptList().get(i).isProven()) {
+                CredentialOffer credentialOffer = universityIssuer.createCredentialOffer(credentialDefinitionService.getCredentialDefinitionIds().get(CredentialDefinitionType.Type.TRANSCRIPT), did).get();
+                credentialOffers.addCredentialOffer(credentialOffer);
+                log.debug("Returning credentialOffers {}", credentialOffers);
+                transcripts.put(credentialOffer.getNonce(), i);
             }
+
+        }
+        List<Transcript> resultPropedeuseList = transcriptList
+                .stream()
+                .filter(x -> x.getTranscriptType().equalsIgnoreCase("propedeuse"))
+                .collect(Collectors.toList());
+        for(int x = 1; x < resultPropedeuseList.size() + 1; x++){
+            if (student.getTranscriptList().get(x) != null && !student.getTranscriptList().get(x).isProven()) {
+                CredentialOffer credentialOffer = universityIssuer.createCredentialOffer(credentialDefinitionService.getCredentialDefinitionIds().get(CredentialDefinitionType.Type.PROPEDEUSE), did).get();
+                credentialOffers.addCredentialOffer(credentialOffer);
+                log.debug("Returning credentialOffers {}", credentialOffers);
+                transcripts.put(credentialOffer.getNonce(), x);
+            }
+
         }
 
         return messageEnvelopeCodec.encryptMessage(credentialOffers, IndyMessageTypes.CREDENTIAL_OFFERS, did).get();
@@ -133,6 +158,7 @@ public class AgentService {
         CredentialRequest credentialRequest = messageEnvelopeCodec.decryptMessage(messageEnvelope).get();
         log.debug("Decrypted request");
         int position = transcripts.get(credentialRequest.getCredentialOffer().getNonce());
+        log.debug("Positie:" + transcripts.get(credentialRequest.getCredentialOffer().getNonce()));
         Student student = studentService.getStudentByStudentDid(messageEnvelope.getDid());
         Map<String, Object> values = new HashMap<>();
         values.put("full_name", student.getFirstName() + " " + student.getLastName());

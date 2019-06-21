@@ -52,10 +52,10 @@ public class BootstrapController {
 
     private String credDefId;
 
-    @PostMapping("/credential_definition/{schemaId}")
-    public String createCredentialDefinition(@PathVariable("schemaId") String schemaId) throws IndyException, ExecutionException, InterruptedException, JsonProcessingException {
+    @PostMapping("/credential_definition/{schemaId}/{credDefType}")
+    public String createCredentialDefinition(@PathVariable("schemaId") String schemaId, @PathVariable("credDefType") String credentialDefinitionType) throws IndyException, ExecutionException, InterruptedException, JsonProcessingException {
         try {
-            return credentialDefinitionService.createCredentialDefintion(schemaId);
+            return credentialDefinitionService.createCredentialDefinition(schemaId, credentialDefinitionType);
         }
         catch (ExecutionException e) {
             // This is totally fine
@@ -65,6 +65,7 @@ public class BootstrapController {
         }
         return null;
     }
+
 
     @Transactional
     @PostMapping("/create_student/{studentId}")

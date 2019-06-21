@@ -132,6 +132,20 @@ public class Seeder {
         }
     }
 
+    @Command(name = "schemacourse", description = "Define schema and return schema ID.")
+    static class SchemaCourseCommand implements Runnable {
+        @Override
+        public void run() {
+            try {
+                IndyWallet stewardWallet = IndyWallet.open(indyPool, "steward", "000000000000000000000000Steward1", "Th7MpTaRZVRYnPiabds81Y");
+                Issuer trustAnchorIssuer = new Issuer(stewardWallet);
+                String schemaCourseId = trustAnchorIssuer.createAndSendSchema("Propedeuse", "1.0", "full_name", "degree", "type", "courses", "totalec", "completiondate").get();
+                System.out.println(schemaCourseId);
+            } catch (Exception e) {
+                exception(e);
+            }
+        }
+    }
 
 
 
@@ -143,12 +157,14 @@ public class Seeder {
         @Parameters(index = "1", paramLabel = "<schema-definition-id>", description = "Credential definition ID")
         private String schemaId;
 
+        @Parameters(index = "2", paramLabel = "<schema-course-definition-id>", description = "Credential schema definition id")
+        private String credentialOfferType;
+
         @Override
         public void run() {
             try {
                 RestTemplate restTemplate = new RestTemplate();
-                ResponseEntity<String> response = restTemplate.postForEntity(domain+"/bootstrap/credential_definition/" + schemaId, null, String.class);
-
+                ResponseEntity<String> response = restTemplate.postForEntity(domain+"/bootstrap/credential_definition/" + schemaId + "/" + credentialOfferType , null, String.class);
                 System.out.println(response.getBody());
             } catch (Exception e) {
                 exception(e);
@@ -156,26 +172,26 @@ public class Seeder {
         }
     }
 
-    @Command(name = "exchange-position", description = "Exchange position.")
-    static class ExchangePositionCommand implements Runnable {
-        @Parameters(index = "0", paramLabel = "<domain>", description = "Domain from the target university")
-        private String domain;
-
-        @Parameters(index = "1", paramLabel = "<cred-def-id>", description = "Credential definition ID")
-        private String creddefId;
-
-        @Override
-        public void run() {
-            try {
-                RestTemplate restTemplate = new RestTemplate();
-                ResponseEntity<String> response = restTemplate.postForEntity(domain+"/bootstrap/exchange_position/" + creddefId, null, String.class);
-
-                System.out.println(response.getBody());
-            } catch (Exception e) {
-                exception(e);
-            }
-        }
-    }
+//    @Command(name = "exchange-position", description = "Exchange position.")
+//    static class ExchangePositionCommand implements Runnable {
+//        @Parameters(index = "0", paramLabel = "<domain>", description = "Domain from the target university")
+//        private String domain;
+//
+//        @Parameters(index = "1", paramLabel = "<cred-def-id>", description = "Credential definition ID")
+//        private String creddefId;
+//
+//        @Override
+//        public void run() {
+//            try {
+//                RestTemplate restTemplate = new RestTemplate();
+//                ResponseEntity<String> response = restTemplate.postForEntity(domain+"/bootstrap/exchange_position/" + creddefId, null, String.class);
+//
+//                System.out.println(response.getBody());
+//            } catch (Exception e) {
+//                exception(e);
+//            }
+//        }
+//    }
 
 
     @Command(name = "student", description = "Create student.")
@@ -204,7 +220,7 @@ public class Seeder {
         e.printStackTrace();
     }
 
-    @Command(name = "", subcommands = {SeedCommand.class, DidCommand.class, VerkeyCommand.class, OnboardCommand.class, SchemaCommand.class, CredDefCommand.class, ExchangePositionCommand.class, StudentCommand.class})
+    @Command(name = "", subcommands = {SeedCommand.class, DidCommand.class, VerkeyCommand.class, OnboardCommand.class, SchemaCommand.class, SchemaCourseCommand.class, CredDefCommand.class,  StudentCommand.class})
     static class ParentCommand implements Runnable {
         @Override
         public void run() {

@@ -15,12 +15,18 @@ seeder onboard $GRONINGEN_SEED $GRONINGEN_NAME $GRONINGEN_DID
 seeder onboard $GENT_SEED $GENT_NAME $GENT_DID
 
 SCHEMA_ID=$(seeder schema)
+SCHEMA_COURSE_ID=$(seeder schemacourse)
 
-CRED_DEF_ID=$(seeder cred-def http://localhost:8080 $SCHEMA_ID)
+TRANSCRIPT="TRANSCRIPT"
+PROPEDEUSE="PROPEDEUSE"
+
+
+CRED_COURSE_DEF_ID=$(seeder cred-def http://localhost:8080 $SCHEMA_COURSE_ID $PROPEDEUSE)
+CRED_DEF_ID=$(seeder cred-def http://localhost:8080 $SCHEMA_ID $TRANSCRIPT)
 echo "CRED DEF ID $CRED_DEF_ID"
-seeder student http://localhost:8080 12345678
+seeder student http://localhost:8080 2102241
 
-seeder exchange-position http://localhost:8081 $CRED_DEF_ID
+# seeder exchange-position http://localhost:8081 $CRED_DEF_ID
 
 touch /finished.txt
 
