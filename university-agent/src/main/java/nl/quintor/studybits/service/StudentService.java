@@ -2,6 +2,7 @@ package nl.quintor.studybits.service;
 
 import nl.quintor.studybits.entity.ExchangePosition;
 import nl.quintor.studybits.entity.Student;
+import nl.quintor.studybits.entity.Transcript;
 import nl.quintor.studybits.exceptions.UserAlreadyExistAuthenticationException;
 import nl.quintor.studybits.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,8 @@ import java.util.UUID;
 public class StudentService {
     @Autowired
     private StudentRepository studentRepository;
+    @Autowired
+    private TranscriptService transcriptService;
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -50,11 +53,16 @@ public class StudentService {
     }
 
     @Transactional
-    public void proveTranscript(String studentId, int i) {
+    public void proveTranscript(String studentId, String nonce) {
         Student studentEntity = studentRepository.getStudentByStudentId(
                 studentId
         );
-        studentEntity.getTranscriptList().get(i).setProven(true);
+        for (Transcript t: studentEntity.getTranscriptList()
+             ) {
+            if(t.getNonce().equals(nonce)) {
+                t.setProven(true);
+            }
+        }
         studentRepository.saveAndFlush(studentEntity);
     }
 

@@ -39,6 +39,9 @@ public class Transcript {
     @Column
     private int totalEC;
 
+    @Column
+    private String nonce;
+
     @ManyToOne
     @JoinColumn
     private Student student;
