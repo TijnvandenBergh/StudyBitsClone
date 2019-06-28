@@ -144,7 +144,7 @@ public class AgentService {
 //                .filter(x -> x.getTranscriptType().equalsIgnoreCase("bachelor"))
 //                .collect(Collectors.toList());
 //        log.debug("items after list " + resultTranscriptList.size());
-//        for(int i = 0; i < resultTranscriptList.size(); i++){
+//        for(int i = 0; i < resultTranscriptList.size(); i++){l
 //            if (student.getTranscriptList().get(i) != null && !student.getTranscriptList().get(i).isProven()) {
 //                CredentialOffer credentialOffer = universityIssuer.createCredentialOffer(credentialDefinitionService.getCredentialDefinitionIds().get(CredentialDefinitionType.Type.TRANSCRIPT), did).get();
 //                credentialOffers.addCredentialOffer(credentialOffer);
