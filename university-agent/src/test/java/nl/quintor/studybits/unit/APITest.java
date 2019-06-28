@@ -6,8 +6,6 @@ import org.junit.Test;
 
 import static io.restassured.RestAssured.when;
 
-
-@Run
 public class APITest {
 
     APIrequestService apIrequestService = new APIrequestService();
