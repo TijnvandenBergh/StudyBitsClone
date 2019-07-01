@@ -1,6 +1,9 @@
 package nl.quintor.studybits.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -12,13 +15,15 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class APIrequestService {
 
+    @Autowired
+    RestTemplate restTemplate;
+
     @Async
     public String request(int id, String url, String endpoint) {
         String fullUrl = url + endpoint;
         log.debug(fullUrl);
         String idVar = Integer.toString(id);
         log.debug("Studentid");
-        RestTemplate restTemplate = new RestTemplate();
         try{
 
             return restTemplate.getForObject(fullUrl, String.class, idVar);
@@ -30,4 +35,11 @@ public class APIrequestService {
             return "Not known error";
         }
     }
+
+
+    @Bean
+    public RestTemplate restTemplate(RestTemplateBuilder restTemplateBuilder) {
+        return restTemplateBuilder.build();
+    }
+
 }
