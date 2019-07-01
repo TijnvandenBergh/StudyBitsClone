@@ -9,4 +9,5 @@ jobs:
       - setup_remote_docker
       - checkout
       - run: ./.circleci.sh
-      - run: cd ./university-agent && mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install -DskipTests sonar:sonar -Dsonar.projectKey=tijn167_StudyBitsClone -Dsonar.organization=tijn167-github -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=3e3522a517ba920fe757ea8cf5e9255350f270e5
+      - run cd ./seeder && mvn clean
+      - run: cd ./university-agent && mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=tijn167_StudyBitsClone -Dsonar.organization=tijn167-github -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=3e3522a517ba920fe757ea8cf5e9255350f270e5
