@@ -11,6 +11,9 @@ public class ParserFactory {
     @Autowired
     OsirisParser osirisParser;
 
+    @Autowired
+    ProgressParser progressParser;
+
     public Parser getParser(String system) {
         if (system == null) {
             return null;
@@ -30,7 +33,7 @@ public class ParserFactory {
         return osirisParser;
     }
 
-    public OsirisParser ProgressCreateService() {
-        return new OsirisParser("ProgressParser");
+    public ProgressParser ProgressCreateService() {
+        return progressParser;
     }
 }
