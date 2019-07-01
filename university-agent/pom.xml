@@ -17,7 +17,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <sonar.exclusions>
             **/Main.java,
-            **/config/*.java
+            **/config/*.java,
+            **/messages/AuthcryptableExchangePositions.java
         </sonar.exclusions>
     </properties>
 
