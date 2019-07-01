@@ -41,6 +41,12 @@ public class ParsorFactoryTest {
     ProgressParser progressParser;
 
     @Test
+    public void testSystemWhileStringIsNull() {
+        Parser serv = parserFactory.getParser(null);
+        assertThat(serv,  is(nullValue()));
+    }
+
+    @Test
     public void testCreateOsirisServiceSuccesFull() {
         Parser serv = parserFactory.getParser("Osiris");
         assertThat(serv, instanceOf(OsirisParser.class));
