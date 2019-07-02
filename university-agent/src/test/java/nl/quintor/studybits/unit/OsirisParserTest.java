@@ -58,10 +58,10 @@ public class OsirisParserTest {
       Assert.assertEquals("TestCall", osirisParser.callDataSource(1, "", ""));
     }
 
-    @Test
-    public void parseStudent() {
-        when(osirisParser.callDataSource(1, "", "")).thenReturn("TestStudent");
-
-    }
+//    @Test
+//    public void parseStudent() {
+//       when(osirisParser.callDataSource(1, "", "")).thenReturn("TestStudent");
+//
+//    }
 
 }
