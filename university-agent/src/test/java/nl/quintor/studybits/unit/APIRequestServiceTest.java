@@ -32,13 +32,11 @@ public class APIRequestServiceTest {
     @TestConfiguration
     static class RequestServiceContextConfiguration {
         @Bean
-        @Qualifier("TestService")
         public APIrequestService apiRequestService() {
             return new APIrequestService();
         }
     }
 
-    @Qualifier("TestService")2
     @Autowired
     APIrequestService apIrequestService;
 
