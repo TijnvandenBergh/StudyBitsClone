@@ -38,7 +38,7 @@ public class APIRequestServiceTest {
         }
     }
 
-    @Qualifier("TestService")
+    @Qualifier("TestService")2
     @Autowired
     APIrequestService apIrequestService;
 
