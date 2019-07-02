@@ -3,17 +3,33 @@ package nl.quintor.studybits.unit;
 import nl.quintor.studybits.service.APIrequestService;
 import nl.quintor.studybits.service.OsirisParser;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.web.client.RestTemplate;
 
 import static org.assertj.core.api.Fail.fail;
 import static org.mockito.Mockito.*;
 
-@RunWith(SpringRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class OsirisParserTest {
 
+    @Mock
+    APIrequestService apIrequestService;
+
+    @InjectMocks
+    OsirisParser osirisParser;
+
+    @Before
+    public void setup() {
+        MockitoAnnotations.initMocks(this);
+    }
 
     @Autowired
     @Test
@@ -38,10 +54,8 @@ public class OsirisParserTest {
 
     @Test
     public void testCallingDataSource() {
-        APIrequestService apIrequestService = mock(APIrequestService.class);
-        doReturn("Test").when(apIrequestService).request(2102241, "", "");
-        String result = apIrequestService.request(2102241, "", "");
-        Assert.assertEquals("Test", result);
+      when(apIrequestService.request(1,"","")).thenReturn("TestCall");
+      Assert.assertEquals("TestCall", osirisParser.callDataSource(1, "", ""));
     }
 
 }

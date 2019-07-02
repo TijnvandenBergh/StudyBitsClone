@@ -23,7 +23,6 @@ public class OsirisParser extends Parser {
     private static final String URL_PROGRESS = "http://my-json-server.typicode.com/tijn167/FakeJsonApi";
     private static final String STUDENT_BY_STUDENTID_ENDPOINT ="/student/{id}";
 
-    @Qualifier("ProdBean")
     @Autowired
     APIrequestService requestService;
 

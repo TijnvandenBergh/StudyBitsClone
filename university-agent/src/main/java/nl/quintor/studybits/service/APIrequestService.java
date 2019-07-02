@@ -14,7 +14,6 @@ import org.springframework.web.client.RestTemplate;
 
 @Slf4j
 @Service
-@Qualifier("ProdBean")
 public class APIrequestService {
 
     @Autowired
