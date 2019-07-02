@@ -29,14 +29,15 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
 @RunWith(SpringRunner.class)
 public class APIRequestServiceTest {
 
-//    @TestConfiguration
-//    static class RequestServiceContextConfiguration {
-//        @Bean
-//        public APIrequestService apiRequestService() {
-//            return new APIrequestService();
-//        }
-//    }
-
+    @TestConfiguration
+    static class RequestServiceContextConfiguration {
+        @Qualifier("TestBean")
+        @Bean
+        public APIrequestService apiRequestService() {
+            return new APIrequestService();
+        }
+    }
+    @Qualifier("TestBean")
     @Autowired
     APIrequestService apIrequestService;
 
