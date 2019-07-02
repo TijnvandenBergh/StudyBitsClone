@@ -24,8 +24,10 @@
             **/entity/CredentialDefinitionType.java,
             **/entity/Transcript.java,
             **/exceptions/UserAlreadyExistAuthenticationException.java,
-            **/repository/*.java
-            **/messages/AuthcryptableExchangePositions.java
+            **/repository/*.java,
+            **/messages/AuthcryptableExchangePositions.java,
+            **/service/IdentityService.java,
+            **/service/StudentUserDetailService.java
         </sonar.exclusions>
     </properties>
 

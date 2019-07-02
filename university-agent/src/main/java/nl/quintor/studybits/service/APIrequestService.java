@@ -19,7 +19,6 @@ public class APIrequestService {
     @Autowired
     RestTemplate restTemplate;
 
-    @Async
     public String request(int id, String url, String endpoint) {
         String fullUrl = url + endpoint;
         log.debug(fullUrl);

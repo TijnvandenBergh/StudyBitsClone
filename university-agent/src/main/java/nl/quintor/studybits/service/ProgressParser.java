@@ -10,10 +10,6 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 public class ProgressParser extends Parser {
-    @Override
-    public String callDataSource(int id, String url, String endpoint) {
-        return null;
-    }
 
     @Override
     public Student parseStudent(int studentid) {

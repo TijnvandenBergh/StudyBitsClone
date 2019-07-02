@@ -33,24 +33,24 @@ public class OsirisParser extends Parser {
         super(name, URL_PROGRESS);
     }
 
-
-    /**
-     *
-     * @param id the student id
-     * @param url the base-url of the endpoint
-     * @param endpoint the endpoint to call
-     * @return the JSON string with the data.
-     */
-    @Override
-    public String callDataSource(int id, String url, String endpoint) {
-        String data = requestService.request(id, url, endpoint);
-        log.debug(data);
-        return data;
-    }
+//
+//    /**
+//     *
+//     * @param id the student id
+//     * @param url the base-url of the endpoint
+//     * @param endpoint the endpoint to call
+//     * @return the JSON string with the data.
+//     */
+//    @Override
+//    public String callDataSource(int id, String url, String endpoint) {
+//        String data = requestService.request(id, url, endpoint);
+//        return data;
+//    }
 
     @Override
     public Student parseStudent(int studentid) {
-        String response = callDataSource(studentid,URL_PROGRESS, STUDENT_BY_STUDENTID_ENDPOINT);
+        String response = requestService.request(studentid,URL_PROGRESS, STUDENT_BY_STUDENTID_ENDPOINT);
+        log.debug(response);
         String id = Integer.toString(studentid);
         Student currentStudent = null;
         log.debug("Studenten identiteit " + id);

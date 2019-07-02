@@ -1,0 +1,134 @@
+{
+	"student": [{
+		"id": 2102241,
+		"name": "T. van den Bergh",
+		"Studentnummer": 2102241,
+		"Voornamen": "Tijn",
+		"Roepnaam": "Tijn",
+		"Geboortedatum": "06-11-1995",
+		"Geboorteplaats": "Veldhoven",
+		"Opleiding": "Informatica",
+		"E-mailadres": "Fakeemail@avans.nl",
+		"inschrijvingen": [{
+
+			"name": "INFORMATICA-BACHELOR",
+			"type": "Bachelor", 
+			"judicium": true,
+			"completionDate": "31/05/2018",
+			"totalEC": 240,
+			"fases": [{
+					"faseCode": "IMIN-DV-PROP-15",
+					"judicium": true,
+					"cohort": "2015",
+					"type": "propedeuse",
+					"completionDate": "07/07/2016",
+					"totalEC": 60,
+					"receivedEC": 60, 
+					"hasTranscript": true, 
+					"grades": [{
+						"courseCode": "X-C++-19",
+						"courseName": "C++ assessments",
+						"Grade": "7.9"
+						},
+						   {
+						"courseCode": "I-C#--19",
+						"courseName": "C# assessments",
+						"Grade": "8.5"
+						   },{
+						"courseCode": "I-SQL-19",
+						"courseName": "SQL databases",
+						"Grade": "6.0"
+						   },
+						   {
+						"courseCode": "I-SOA-Architectuur-19",
+						"courseName": "SOA Architectuur",
+						"Grade": "8"
+						   }
+						  ]
+
+				},
+				{
+					"faseCode": "IMIN-DV-KERN-15",
+					"judicium": "geslaagd",
+					"cohort": "2016",
+					"completionDate": "07-07-2016",
+					"totalEC": 180,
+					"receivedEC": 180,
+					"hasTranscript": false,
+					"grades": [{
+						"courseCode": "X-C++-19",
+						"courseName": "C++ assessments",
+						"Grade": "7.9"
+					},
+						   {
+						"courseCode": "X-C++-19",
+						"courseName": "C++ assessments",
+						"Grade": "7.9"
+						   },{
+						"courseCode": "X-C++-19",
+						"courseName": "C++ assessments",
+						"Grade": "7.9"
+						   },
+						   {
+						"courseCode": "X-C++-19",
+						"courseName": "C++ assessments",
+						"Grade": "7.9"
+					}]
+				}
+			],
+			"grades": [{
+						"courseCode": "X-C++-19",
+						"courseName": "C++ assessments",
+						"Grade": "7.9"
+					},
+						   {
+						"courseCode": "X-C++-19",
+						"courseName": "C++ assessments",
+						"Grade": "7.9"
+						   },{
+						"courseCode": "X-C++-19",
+						"courseName": "C++ assessments",
+						"Grade": "7.9"
+						   },
+						   {
+						"courseCode": "X-C++-19",
+						"courseName": "C++ assessments",
+						"Grade": "7.9"
+					},
+				   {
+						"courseCode": "X-C++-19",
+						"courseName": "C++ assessments",
+						"Grade": "7.9"
+						},
+						   {
+						"courseCode": "I-C#--19",
+						"courseName": "C# assessments",
+						"Grade": "8.5"
+						   },{
+						"courseCode": "I-SQL-19",
+						"courseName": "SQL databases",
+						"Grade": "6.0"
+						   },
+						   {
+						"courseCode": "I-SOA-Architectuur-19",
+						"courseName": "SOA Architectuur",
+						"Grade": "8"
+						   }
+				  ]
+		}],
+
+		"voortgang": [{
+				"name": "informatica-propedeuse",
+				"accomplished": true
+			},
+			{
+				"name": "informatica-hoofdfase",
+				"accomplished": true
+			},
+			{
+				"name": "informatica-compleet",
+				"accomplished": false
+			}
+		]
+	}]
+}
