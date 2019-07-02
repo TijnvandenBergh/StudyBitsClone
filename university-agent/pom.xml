@@ -18,6 +18,13 @@
         <sonar.exclusions>
             **/Main.java,
             **/config/*.java,
+            **/controller/AgentController.java,
+            **/entity/Course.java,
+            **/entity/ExchangePosition.java,
+            **/entity/CredentialDefinitionType.java,
+            **/entity/Transcript.java,
+            **/exceptions/UserAlreadyExistAuthenticationException.java,
+            **/repository/*.java
             **/messages/AuthcryptableExchangePositions.java
         </sonar.exclusions>
     </properties>
