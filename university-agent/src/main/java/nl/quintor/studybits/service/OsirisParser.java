@@ -7,6 +7,7 @@ import nl.quintor.studybits.entity.Course;
 import nl.quintor.studybits.entity.Student;
 import nl.quintor.studybits.entity.Transcript;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -56,30 +57,35 @@ public class OsirisParser extends Parser {
         log.debug("Studenten identiteit " + id);
         currentStudent = studentService.getStudentByStudentId(id);
         List<Transcript> retrievedTranscripts = new ArrayList<>();
-        JSONObject jsonObject = new JSONObject(response);
-        //All the enrollments the student is listed for on this university
-        JSONArray jsonArrayEnrollments = jsonObject.getJSONArray("inschrijvingen");
-        //For-loop to walk through all the enrollments and parse the full enrollment-transcript
-        for(int i = 0; i < jsonArrayEnrollments.length(); i++) {
-            JSONObject enrollment = jsonArrayEnrollments.getJSONObject(i);
-            Transcript fullTranscript = parseTranscript(enrollment.toString());
-            fullTranscript.setStudent(currentStudent);
-            retrievedTranscripts.add(fullTranscript);
-            JSONArray jsonArrayFases = enrollment.getJSONArray("fases");
-            log.debug("Aantal fases: " + jsonArrayFases.length());
-            //Getting the different fases belonging to the enrollment of the student
-            for(int x = 0; x < jsonArrayFases.length(); x++) {
-                JSONObject fase = jsonArrayFases.getJSONObject(x);
-                Transcript faseTranscript = parseFaseTranscript(fase.toString());
-                if (faseTranscript != null) {
-                    faseTranscript.setStudent(currentStudent);
-                    retrievedTranscripts.add(faseTranscript);
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            //All the enrollments the student is listed for on this university
+            JSONArray jsonArrayEnrollments = jsonObject.getJSONArray("inschrijvingen");
+            //For-loop to walk through all the enrollments and parse the full enrollment-transcript
+            for (int i = 0; i < jsonArrayEnrollments.length(); i++) {
+                JSONObject enrollment = jsonArrayEnrollments.getJSONObject(i);
+                Transcript fullTranscript = parseTranscript(enrollment.toString());
+                fullTranscript.setStudent(currentStudent);
+                retrievedTranscripts.add(fullTranscript);
+                JSONArray jsonArrayFases = enrollment.getJSONArray("fases");
+                log.debug("Aantal fases: " + jsonArrayFases.length());
+                //Getting the different fases belonging to the enrollment of the student
+                for (int x = 0; x < jsonArrayFases.length(); x++) {
+                    JSONObject fase = jsonArrayFases.getJSONObject(x);
+                    Transcript faseTranscript = parseFaseTranscript(fase.toString());
+                    if (faseTranscript != null) {
+                        faseTranscript.setStudent(currentStudent);
+                        retrievedTranscripts.add(faseTranscript);
+                    }
                 }
             }
+            log.debug("Grootte van diploma" + retrievedTranscripts.size());
+            currentStudent.setTranscriptList(retrievedTranscripts);
+            studentService.saveStudent(currentStudent);
+            return currentStudent;
+        } catch (JSONException ex) {
+            log.debug("JSON EXCEPTION TIJDENS PARSING");
         }
-        log.debug("Grootte van diploma" + retrievedTranscripts.size());
-        currentStudent.setTranscriptList(retrievedTranscripts);
-        studentService.saveStudent(currentStudent);
         return currentStudent;
     }
 
