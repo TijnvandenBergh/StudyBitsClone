@@ -84,7 +84,7 @@ public class OsirisParser extends Parser {
             studentService.saveStudent(currentStudent);
             return currentStudent;
         } catch (JSONException ex) {
-            log.debug("JSON EXCEPTION TIJDENS PARSING");
+            log.debug("Error: " + ex.getMessage());
         }
         return currentStudent;
     }

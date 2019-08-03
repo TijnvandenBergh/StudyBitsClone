@@ -26,8 +26,12 @@
             **/exceptions/UserAlreadyExistAuthenticationException.java,
             **/repository/*.java,
             **/messages/AuthcryptableExchangePositions.java,
+            **/messages/StudyBitsMessageTypes.java,
             **/service/IdentityService.java,
-            **/service/StudentUserDetailService.java
+            **/service/StudentUserDetailService.java,
+            **/service/ExchangePositionService.java,
+            **/service/StudentUserDetailService.java,
+            **/service/TranscriptService.java
         </sonar.exclusions>
     </properties>
 
