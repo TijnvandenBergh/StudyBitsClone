@@ -123,6 +123,7 @@ public class AgentService {
         log.debug("Found student for which to get credential offers {}", student);
         log.debug("Item count in map" + credentialDefinitionService.getCredentialDefinitionIds().size());
         List<Transcript> transcriptList = student.getTranscriptList();
+        if(transcriptList != null) {
         for (int x = 0; x < transcriptList.size(); x++) {
             if (transcriptList.get(x).getTranscriptType().equalsIgnoreCase("bachelor") && transcriptList.get(x).isProven() == false) {
                 CredentialOffer credentialOffer = universityIssuer.createCredentialOffer(credentialDefinitionService.getCredentialDefinitionIds().get(CredentialDefinitionType.Type.TRANSCRIPT), did).get();
@@ -137,6 +138,7 @@ public class AgentService {
                 studentService.saveStudent(student);
                 credentialOffers.addCredentialOffer(credentialOffer);
                 log.debug("Returning credentialOffers {}", credentialOffers);
+            }
             }
         }
 //        List<Transcript> resultTranscriptList = transcriptList

@@ -46,4 +46,8 @@ public class CredentialDefinitionService {
 
         return "Bad request";
     }
+
+    public String getCredentialDefinitionId(CredentialDefinitionType type) {
+        return credentialDefinitionIds.get(type);
+    }
 }
