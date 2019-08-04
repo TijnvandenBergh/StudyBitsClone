@@ -30,6 +30,7 @@
             **/messages/StudyBitsMessageTypes.java,
             **/service/IdentityService.java,
             **/service/StudentUserDetailService.java,
+            **/service/StudentService.java,
             **/service/ExchangePositionService.java,
             **/service/StudentUserDetailService.java,
             **/service/TranscriptService.java
