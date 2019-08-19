@@ -6,13 +6,11 @@ import nl.quintor.studybits.entity.Student;
 import nl.quintor.studybits.entity.Transcript;
 import nl.quintor.studybits.indy.wrapper.Issuer;
 import nl.quintor.studybits.indy.wrapper.Verifier;
-import nl.quintor.studybits.indy.wrapper.dto.CredentialOffer;
-import nl.quintor.studybits.indy.wrapper.dto.CredentialOfferList;
-import nl.quintor.studybits.indy.wrapper.dto.CredentialRequest;
-import nl.quintor.studybits.indy.wrapper.dto.CredentialWithRequest;
+import nl.quintor.studybits.indy.wrapper.dto.*;
 import nl.quintor.studybits.indy.wrapper.message.IndyMessageTypes;
 import nl.quintor.studybits.indy.wrapper.message.MessageEnvelope;
 import nl.quintor.studybits.indy.wrapper.message.MessageEnvelopeCodec;
+import nl.quintor.studybits.indy.wrapper.util.JSONUtil;
 import nl.quintor.studybits.messages.StudyBitsMessageTypes;
 import nl.quintor.studybits.service.*;
 import org.apache.commons.lang3.NotImplementedException;
@@ -28,6 +26,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.CompletableFuture;
@@ -129,13 +128,11 @@ public class AgentServiceTest {
     @Test(expected = NotImplementedException.class)
     public void unsupportedMessageTypeTest() throws Exception {
         JSONObject json = new JSONObject();
-
         json.put("id", student.getStudentDid());
         json.put("type", "urn:indy:sov:agent:message_type:sovrin.org/connection/1.0/verinym");
         json.put("message", "");
         MessageEnvelope messageEnvelope = MessageEnvelope.parseFromString(json.toString(), IndyMessageTypes.VERINYM);
         sut.processMessage(messageEnvelope);
-
     }
 
 //    @Test
@@ -169,23 +166,35 @@ public class AgentServiceTest {
         Mockito.verify(messageEnvelopeCodec).encryptMessage(any(CredentialOfferList.class), eq(IndyMessageTypes.CREDENTIAL_OFFERS), eq(student.getStudentDid()));
     }
 
+    @Test
+    public void handleCredentialRequestTest() throws Exception {
+        CredentialRequest credentialRequest = new CredentialRequest("", "", credentialOfferList.getCredentialOffers().get(0));
+        Mockito.when(messageEnvelopeCodec.decryptMessage(any())).thenReturn(CompletableFuture.completedFuture(credentialRequest));
+        Mockito.when(studentService.getStudentByStudentDid(student.getStudentDid())).thenReturn(student);
+        Mockito.doNothing().when(studentService).proveTranscript(student.getStudentDid(), "1111111");
+        CredentialWithRequest credentialWithRequest = new CredentialWithRequest();
+        Mockito.when(universityIssuer.createCredential(eq(credentialRequest), anyMap())).thenReturn(CompletableFuture.completedFuture(credentialWithRequest));
+        Mockito.when(messageEnvelopeCodec.encryptMessage(credentialWithRequest, IndyMessageTypes.CREDENTIAL, student.getStudentDid())).thenReturn(CompletableFuture.completedFuture(null));
+        JSONObject json = new JSONObject();
+        json.put("id", student.getStudentDid());
+        json.put("type", "urn:indy:sov:agent:message_type:sovrin.org/credential/1.0/credential_request");
+        json.put("message", "");
+        MessageEnvelope messageEnvelope = MessageEnvelope.parseFromString(json.toString(), IndyMessageTypes.CREDENTIAL_REQUEST);
+        sut.processMessage(messageEnvelope);
+        //assert
+        Mockito.verify(messageEnvelopeCodec).encryptMessage(credentialWithRequest, IndyMessageTypes.CREDENTIAL, student.getStudentDid());
+    }
+
 //    @Test
-//    public void handleCredentialRequestTest() throws Exception {
-//        CredentialRequest credentialRequest = new CredentialRequest("", "", credentialOfferList.getCredentialOffers().get(0));
-//        Mockito.when(messageEnvelopeCodec.decryptMessage(any())).thenReturn(CompletableFuture.completedFuture(credentialRequest));
+//    public void handleProofTest() {
 //        Mockito.when(studentService.getStudentByStudentDid(student.getStudentDid())).thenReturn(student);
-//        Mockito.doNothing().when(studentService).proveTranscript(student.getStudentDid(), "1111111");
-//        CredentialWithRequest credentialWithRequest = new CredentialWithRequest();
-//        Mockito.when(universityIssuer.createCredential(eq(credentialRequest), anyMap())).thenReturn(CompletableFuture.completedFuture(credentialWithRequest));
-//        Mockito.when(messageEnvelopeCodec.encryptMessage(credentialWithRequest, IndyMessageTypes.CREDENTIAL, student.getStudentDid())).thenReturn(CompletableFuture.completedFuture(null));
-//        JSONObject json = new JSONObject();
-//        json.put("id", student.getStudentDid());
-//        json.put("type", "urn:indy:sov:agent:message_type:sovrin.org/credential/1.0/credential_request");
-//        json.put("message", "");
-//        MessageEnvelope messageEnvelope = MessageEnvelope.parseFromString(json.toString(), IndyMessageTypes.CREDENTIAL_REQUEST);
-//        sut.processMessage(messageEnvelope);
-//        //assert
-//        Mockito.verify(messageEnvelopeCodec).encryptMessage(credentialWithRequest, IndyMessageTypes.CREDENTIAL, student.getStudentDid());
+//        Student studentTest = studentService.getStudentByStudentDid(student.getStudentDid());
+//        try {
+//            ProofRequest proofRequest = JSONUtil.mapper.readValue(student.getProofRequest(), ProofRequest.class);
+//            Proof proof =
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 //
 //    }
 
