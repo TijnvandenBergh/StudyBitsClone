@@ -18,7 +18,7 @@
         <sonar.exclusions>
             **/Main.java,
             **/config/*.java,
-            **/controller/AgentController.java,
+            **/controller/*.java,
             **/entity/Course.java,
             **/entity/Student.java,
             **/entity/ExchangePosition.java,

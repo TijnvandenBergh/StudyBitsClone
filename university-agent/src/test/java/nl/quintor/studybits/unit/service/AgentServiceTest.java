@@ -65,7 +65,13 @@ public class AgentServiceTest {
     ParserFactory parserFactory;
 
     @MockBean
+    CredentialOffer credentialOffer;
+
+    @MockBean
     CredentialDefinitionService credentialDefinitionService;
+
+    @MockBean
+    CredentialDefinitionType credentialDefinitionType;
 
     @MockBean
     ExchangePositionService exchangePositionService;
@@ -124,7 +130,6 @@ public class AgentServiceTest {
 
 //    @Test
 //    public void getCredentialOffersTest() throws Exception{
-//
 //        JSONObject json = new JSONObject();
 //        json.put("id", student.getStudentDid());
 //        json.put("type", "urn:indy:sov:agent:message_type:sovrin.org/get/1.0/get_request");
@@ -132,7 +137,8 @@ public class AgentServiceTest {
 //        MessageEnvelope messageEnvelope = MessageEnvelope.parseFromString(json.toString(), IndyMessageTypes.GET_REQUEST);
 //        Mockito.when(messageEnvelopeCodec.decryptMessage(any())).thenReturn(CompletableFuture.completedFuture(IndyMessageTypes.CREDENTIAL_OFFERS.getURN()));
 //        sut.processMessage(messageEnvelope);
-//        //Check it
+//
+//        //assert
 //        Mockito.verify(messageEnvelopeCodec).encryptMessage(credentialOfferList, IndyMessageTypes.CREDENTIAL_OFFERS, student.getStudentDid());
 //
 //    }

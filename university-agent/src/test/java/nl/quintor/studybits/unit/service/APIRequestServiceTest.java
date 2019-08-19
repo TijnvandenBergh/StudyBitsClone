@@ -1,4 +1,4 @@
-package nl.quintor.studybits.unit;
+package nl.quintor.studybits.unit.service;
 
 import nl.quintor.studybits.service.APIrequestService;
 import nl.quintor.studybits.service.ParserFactory;
@@ -53,8 +53,8 @@ public class APIRequestServiceTest {
         mockRestServiceServer = MockRestServiceServer.createServer(gatewaySupport);
     }
 
-    @Test
-    public void testGetResponseWhenRequest() {
+//    @Test
+//    public void testGetResponseWhenRequest() {
 //        mockRestServiceServer.expect(once(), requestTo("https://my-json-server.typicode.com/tijn167/fakejsonapi/student/2102241"))
 //        .andRespond(withSuccess("", MediaType.APPLICATION_JSON));
 //
@@ -62,6 +62,6 @@ public class APIRequestServiceTest {
 //        System.out.println(result);
 //        mockRestServiceServer.verify();
 //        assertEquals("{student: 210221}", result);
-    }
+//    }
 
 }
