@@ -3,9 +3,7 @@ package nl.quintor.studybits.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.Getter;
 import nl.quintor.studybits.entity.CredentialDefinitionType;
-import nl.quintor.studybits.indy.wrapper.IndyWallet;
 import nl.quintor.studybits.indy.wrapper.Issuer;
-import nl.quintor.studybits.indy.wrapper.TrustAnchor;
 import org.hyperledger.indy.sdk.IndyException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -47,7 +45,7 @@ public class CredentialDefinitionService {
         return "Bad request";
     }
 
-    public String getCredentialDefinitionId(CredentialDefinitionType type) {
+    public String getCredentialDefinitionId(CredentialDefinitionType.Type type) {
         return credentialDefinitionIds.get(type);
     }
 }
